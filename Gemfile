@@ -5,8 +5,8 @@ gem "sinatra", :require => "sinatra/base"
 gem 'coffee-script'
 gem "uglifier"
 gem "sass"
-gem "sprockets", "2.0.0.beta.12"
+gem "sprockets"
 
-group :test, :develpoment do
+group :test, :development do
   gem 'guard-rails-assets'
 end

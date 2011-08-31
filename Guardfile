@@ -7,12 +7,31 @@ class ::Guard::RailsAssets::RailsRunner
     extend self
     
     def clean
-      public_asset_path = App.sprockets.static_root
+      public_asset_path = File.expand_path("../public/assets", __FILE__)
       rm_rf public_asset_path, :secure => true
     end
     
     def precompile
-      App.sprockets.precompile("*")
+      env = App.settings.sprockets
+      manifest = {}
+      target = Pathname.new(App.settings.assets_path)
+      App.settings.precompile.each do |path|
+        env.each_logical_path do |logical_path|
+          if path.is_a?(Regexp)
+            next unless path.match(logical_path)
+          else
+            next unless File.fnmatch(path.to_s, logical_path)
+          end
+
+          if asset = env.find_asset(logical_path)
+            manifest[logical_path] = asset.digest_path
+            filename = target.join(asset.digest_path)
+            mkdir_p filename.dirname
+            asset.write_to(filename)
+            asset.write_to("#{filename}.gz") if filename.to_s =~ /\.(css|js)$/
+          end
+        end
+      end
     end
   end
   
@@ -25,6 +44,6 @@ class ::Guard::RailsAssets::RailsRunner
 end
 
 guard 'rails-assets' do
-  watch(%r{^app/assets/.+$})
+  watch(%r{^assets/.+$})
   watch('app.rb')
 end

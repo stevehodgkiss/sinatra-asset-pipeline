@@ -5,11 +5,11 @@ end
 namespace :assets do
   desc "Compile all the assets"
   task :precompile => :environment do
-    App.sprockets.precompile("*")
+    raise "Not implemented yet"
   end
 
   desc "Remove compiled assets"
   task :clean => :environment do
-    rm_rf App.sprockets.static_root, :secure => true
+    raise "Not implemented yet"
   end
 end
