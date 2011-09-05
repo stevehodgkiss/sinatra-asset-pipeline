@@ -8,5 +8,5 @@ gem "sass"
 gem "sprockets"
 
 group :test, :development do
-  gem 'guard-rails-assets'
+  gem 'guard-sprockets2'
 end
