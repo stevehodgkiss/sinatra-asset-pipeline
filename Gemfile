@@ -9,4 +9,6 @@ gem "sprockets"
 
 group :test, :development do
   gem 'guard-sprockets2'
+  gem 'rb-fsevent'
+  gem 'growl_notify'
 end
